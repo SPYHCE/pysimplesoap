@@ -208,7 +208,7 @@ class SoapDispatcher(object):
             log.error(traceback.format_exc())
             if self.debug:
                 detail = u''.join(traceback.format_exception(etype, evalue, etb))
-                detail += u'\n\nXML REQUEST\n\n' + xml.decode('UTF-8')
+                detail += u'\n\nXML REQUEST\n\n' + xml
             else:
                 detail = None
             fault.update({'faultcode': "%s.%s" % (soap_fault_code, etype.__name__),
@@ -369,7 +369,7 @@ class SoapDispatcher(object):
                     e['name'] = k
                     if array:
                         e[:] = {'minOccurs': "0", 'maxOccurs': "unbounded"}
-                    if v in TYPE_MAP.keys():
+                    if v in list(TYPE_MAP.keys()):
                         t = 'xsd:%s' % TYPE_MAP[v]
                     elif v is None:
                         t = 'xsd:anyType'
@@ -608,7 +608,7 @@ if __name__ == "__main__":
         result = response.AddResult
         log.info(int(result.ab))
         log.info(str(result.dd))
-        
+
     if '--consume-wsdl' in sys.argv:
         from .client import SoapClient
         client = SoapClient(
